@@ -3,6 +3,7 @@ import java.util.*;
 import java.io.IOException;
 
 public class Main {
+    private static Path currentDirectory = Paths.get("").toAbsolutePath();
     public static void main(String[] args) throws Exception {
         Set<String> commands = Set.of("echo", "exit", "type", "pwd", "cd");
         Scanner scanner = new Scanner(System.in);
@@ -36,17 +37,22 @@ public class Main {
                     }
                 }
             } else if (command.equals("pwd")){
-                System.out.println(System.getProperty("user.dir"));
+                System.out.println(currentDirectory.toString());
             } else if(command.equals("cd")){
                 if(arguments.length == 0){
                     System.out.println("cd: missing argument");
                     continue;
                 }
                 String newDir = arguments[0];
-                Path path = Paths.get(newDir);
+                Path newPath= Paths.get(newDir);
 
-                if(Files.exists(path) && Files.isDirectory(path)){
-                    System.setProperty("user.dir", path.toAbsolutePath().toString());
+                if(!newPath.isAbsolute()){
+                    newPath = currentDirectory.resolve(newPath);
+                }
+                newPath = newPath.normalize();
+
+                if(Files.exists(newPath) && Files.isDirectory(newPath)){
+                    System.setProperty("user.dir", newPath.toAbsolutePath().toString());
                 }else{
                     System.out.printf("cd: %s: No such file or directory%n", newDir);
                 }
