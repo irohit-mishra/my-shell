@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        Set<String> commands = Set.of("echo", "exit", "type");
+        Set<String> commands = Set.of("echo", "exit", "type", "pwd");
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -35,7 +35,9 @@ public class Main {
                         System.out.printf("%s is %s%n", arg, path);
                     }
                 }
-            } else {
+            } else if (command.equals("pwd")){
+                System.out.println(System.getProperty("user.dir"));
+            } else{
                 String path = getPath(command);
                 if (path == null) {
                     System.out.printf("%s: command not found%n", command);
