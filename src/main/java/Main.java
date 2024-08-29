@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        Set<String> commands = Set.of("echo", "exit", "type", "pwd");
+        Set<String> commands = Set.of("echo", "exit", "type", "pwd", "cd");
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -37,7 +37,21 @@ public class Main {
                 }
             } else if (command.equals("pwd")){
                 System.out.println(System.getProperty("user.dir"));
-            } else{
+            } else if(command.equals("cd")){
+                if(arguments.length == 0){
+                    System.out.println("cd: missing argument");
+                    continue;
+                }
+                String newDir = arguments[0];
+                Path path = Paths.get(newDir);
+
+                if(Files.exists(path) && Files.isDirectory(path)){
+                    System.setProperty("user.dir", path.toAbsolutePath().toString());
+                }else{
+                    System.out.printf("cd: %s: No such file or directory%n", newDir);
+                }
+
+                }else{
                 String path = getPath(command);
                 if (path == null) {
                     System.out.printf("%s: command not found%n", command);
