@@ -1,35 +1,17 @@
-[![progress-banner](https://backend.codecrafters.io/progress/shell/18da7900-aabc-4a3c-8c0e-2130e7a24059)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF)
+# My Shell
 
-This is a starting point for Java solutions to the
-["Build Your Own Shell" Challenge](https://app.codecrafters.io/courses/shell/overview).
+**My Shell** is a custom command-line interpreter written in Java. It supports basic shell commands such as `pwd`, `cd`, `echo`, and `type`, along with the ability to execute external programs. The shell can handle absolute and relative paths, as well as the `~` character for the user's home directory.
 
-In this challenge, you'll build your own POSIX compliant shell that's capable of
-interpreting shell commands, running external programs and builtin commands like
-cd, pwd, echo and more. Along the way, you'll learn about shell command parsing,
-REPLs, builtin commands, and more.
+## Features
 
-**Note**: If you're viewing this repo on GitHub, head over to
-[codecrafters.io](https://codecrafters.io) to try the challenge.
+- **Built-in Commands**: 
+  - `pwd`: Prints the current working directory.
+  - `cd`: Changes the directory to a specified path (supports absolute, relative paths, and `~` for the home directory).
+  - `echo`: Displays a line of text.
+  - `type`: Identifies whether a command is a shell builtin or an external program.
 
-# Passing the first stage
+- **External Program Execution**: Executes commands found in directories specified by the `PATH` environment variable.
 
-The entry point for your `shell` implementation is in `src/main/java/Main.java`.
-Study and uncomment the relevant code, and push your changes to pass the first
-stage:
+## Contributing
 
-```sh
-git commit -am "pass 1st stage" # any msg
-git push origin master
-```
-
-Time to move on to the next stage!
-
-# Stage 2 & beyond
-
-Note: This section is for stages 2 and beyond.
-
-1. Ensure you have `java (21)` installed locally
-1. Run `./your_program.sh` to run your program, which is implemented in
-   `src/main/java/Main.java`.
-1. Commit your changes and run `git push origin master` to submit your solution
-   to CodeCrafters. Test output will be streamed to your terminal.
+Feel free to fork this repository, submit issues, or create pull requests. Contributions are welcome!
