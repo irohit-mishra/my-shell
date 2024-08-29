@@ -1,50 +1,73 @@
-import java.util.Scanner;
-import java.util.Arrays;
-import java.io.File;
+import java.nio.file.*;
+import java.util.*;
+import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws Exception {
+        Set<String> commands = Set.of("echo", "exit", "type");
         Scanner scanner = new Scanner(System.in);
-        String input, typeSubstring;
-        String[] commands = {"echo", "exit", "type"};
-        String pathEnv = System.getenv("PATH");  // Get the PATH environment variable
-        String[] pathDirs = pathEnv.split(":");  // Split it into individual directories
 
         while (true) {
-            System.out.print("$ ");  // Print the prompt
-            input = scanner.nextLine();  // Read user input
+            System.out.print("$ ");
+            String input = scanner.nextLine();
+            String[] inputParts = input.split(" ", 2);  // Split input into command and arguments
+            String command = inputParts[0];  // The command to execute
+            String[] arguments = inputParts.length > 1 ? inputParts[1].split(" ") : new String[0];  // The arguments
 
-            if (input.equals("exit 0")) {  // Check if the input is "exit 0"
+            if (command.equals("exit") && arguments.length == 1 && arguments[0].equals("0")) {
                 scanner.close();  // Close the scanner before exiting
-                System.exit(0);  // Exit with status code 0
-            } else if (input.startsWith("echo ")) {  // Check if the input starts with "echo "
-                System.out.println(input.substring(5));  // Print the extracted part
-            } else if (input.startsWith("type ")) {  // Check if the input starts with "type "
-                typeSubstring = input.substring(5);  // Extract the command to check
-
-                // Check if it's a shell builtin
-                if (Arrays.asList(commands).contains(typeSubstring)) {
-                    System.out.println(typeSubstring + " is a shell builtin");
+                System.exit(0);
+            } else if (command.equals("echo")) {
+                System.out.println(String.join(" ", arguments));
+            } else if (command.equals("type")) {
+                if (arguments.length == 0) {
+                    System.out.println("type: missing argument");
+                    continue;
+                }
+                String arg = arguments[0];
+                if (commands.contains(arg)) {
+                    System.out.printf("%s is a shell builtin%n", arg);
                 } else {
-                    boolean found = false;
-
-                    // Search through each directory in the PATH
-                    for (String dir : pathDirs) {
-                        File file = new File(dir, typeSubstring);  // Create a file object for the command
-                        if (file.exists() && file.canExecute()) {  // Check if the file exists and is executable
-                            System.out.println(typeSubstring + " is " + file.getAbsolutePath());
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    if (!found) {
-                        System.out.println(typeSubstring + ": not found");
+                    String path = getPath(arg);
+                    if (path == null) {
+                        System.out.printf("%s: not found%n", arg);
+                    } else {
+                        System.out.printf("%s is %s%n", arg, path);
                     }
                 }
             } else {
-                System.out.println(input + ": command not found");  // Print error message
+                String path = getPath(command);
+                if (path == null) {
+                    System.out.printf("%s: command not found%n", command);
+                } else {
+                    try {
+                        // Build command array including the command and its arguments
+                        List<String> commandArgs = new ArrayList<>();
+                        commandArgs.add(path);
+                        commandArgs.addAll(Arrays.asList(arguments));
+                        ProcessBuilder processBuilder = new ProcessBuilder(commandArgs);
+                        Process process = processBuilder.start();
+                        process.getInputStream().transferTo(System.out);
+                        process.getErrorStream().transferTo(System.err);
+                        process.waitFor();
+                    } catch (IOException | InterruptedException e) {
+                        System.out.printf("%s: error executing command%n", command);
+                    }
+                }
             }
         }
+    }
+
+    private static String getPath(String command) {
+        String pathEnv = System.getenv("PATH");
+        String[] pathDirs = pathEnv.split(":");
+
+        for (String dir : pathDirs) {
+            Path filePath = Paths.get(dir, command);
+            if (Files.exists(filePath) && Files.isExecutable(filePath)) {
+                return filePath.toString();
+            }
+        }
+        return null;
     }
 }
