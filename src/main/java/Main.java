@@ -2,16 +2,21 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        // Uncomment this block to pass the first stage
+        // Print initial prompt
         System.out.print("$ ");
 
         Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-        while(!input.equals(" ")){
-            System.out.print(input + ": command not found\n");
-            System.out.print("$ ");
-        input = scanner.nextLine();
+        String input = scanner.nextLine();  // Read user input
+        
+        while (true) {
+            if (input.equals("exit 0")) {  // Check if the input is "exit 0"
+                System.exit(0);  // Exit with status code 0
+            } else {
+                System.out.print(input + ": command not found\n");  // Print error message
+                System.out.print("$ ");  // Print prompt for the next command
+                
+                input = scanner.nextLine();  // Read the next command
+            }
+        }
     }
-    scanner.close();
-}
 }
