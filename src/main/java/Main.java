@@ -45,6 +45,10 @@ public class Main {
                     continue;
                 }
                 String newDir = arguments[0];
+
+                if(newDir.equals("~")){  //handle ~ character
+                    newDir =  System.getenv("HOME");
+                }
                 Path newPath = Paths.get(newDir);
 
                 if (!newPath.isAbsolute()) {
