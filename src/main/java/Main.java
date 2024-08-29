@@ -3,7 +3,8 @@ import java.util.*;
 import java.io.IOException;
 
 public class Main {
-    private static Path currentDirectory = Paths.get("").toAbsolutePath();
+    private static Path currentDirectory = Paths.get("").toAbsolutePath();  // Corrected initialization
+
     public static void main(String[] args) throws Exception {
         Set<String> commands = Set.of("echo", "exit", "type", "pwd", "cd");
         Scanner scanner = new Scanner(System.in);
@@ -36,28 +37,27 @@ public class Main {
                         System.out.printf("%s is %s%n", arg, path);
                     }
                 }
-            } else if (command.equals("pwd")){
+            } else if (command.equals("pwd")) {
                 System.out.println(currentDirectory.toString());
-            } else if(command.equals("cd")){
-                if(arguments.length == 0){
+            } else if (command.equals("cd")) {
+                if (arguments.length == 0) {
                     System.out.println("cd: missing argument");
                     continue;
                 }
                 String newDir = arguments[0];
-                Path newPath= Paths.get(newDir);
+                Path newPath = Paths.get(newDir);
 
-                if(!newPath.isAbsolute()){
+                if (!newPath.isAbsolute()) {
                     newPath = currentDirectory.resolve(newPath);
                 }
                 newPath = newPath.normalize();
 
-                if(Files.exists(newPath) && Files.isDirectory(newPath)){
-                    System.setProperty("user.dir", newPath.toAbsolutePath().toString());
-                }else{
+                if (Files.exists(newPath) && Files.isDirectory(newPath)) {
+                    currentDirectory = newPath;  // Update the current working directory
+                } else {
                     System.out.printf("cd: %s: No such file or directory%n", newDir);
                 }
-
-                }else{
+            } else {
                 String path = getPath(command);
                 if (path == null) {
                     System.out.printf("%s: command not found%n", command);
@@ -68,6 +68,7 @@ public class Main {
                         commandArgs.add(path);
                         commandArgs.addAll(Arrays.asList(arguments));
                         ProcessBuilder processBuilder = new ProcessBuilder(commandArgs);
+                        processBuilder.directory(currentDirectory.toFile());  // Set the working directory for subprocesses
                         Process process = processBuilder.start();
                         process.getInputStream().transferTo(System.out);
                         process.getErrorStream().transferTo(System.err);
