@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws Exception {
         // Uncomment this block to pass the first stage
-        //System.out.print("$ ");
+        System.out.print("$ ");
 
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
@@ -11,7 +11,7 @@ public class Main {
         System.out.println(input + ": command not found");
         System.out.println(input + ": command not found");
 
-        System.out.println("$");
+        System.out.println("$ ");
         input = scanner.nextLine();
     }while(!input.matches(" "));
     scanner.close();
