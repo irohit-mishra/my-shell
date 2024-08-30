@@ -15,4 +15,6 @@
 ## Contributing
 
 Feel free to fork this repository, submit issues, or create pull requests. Contributions are welcome!
+
+## Note
 This Project is build during Build Your Own X Challange.
