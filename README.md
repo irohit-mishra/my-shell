@@ -1,20 +1,93 @@
-# My Shell
+# 🐚 Java Shell Emulator
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/irohit-mishra/my-shell/blob/master/LICENSE)
 
-**My Shell** is a custom command-line interpreter written in Java. It supports basic shell commands such as `pwd`, `cd`, `echo`, and `type`, along with the ability to execute external programs. The shell can handle absolute and relative paths, as well as the `~` character for the user's home directory.
+A custom shell emulator written in Java that mimics Unix-like terminal behavior. It supports built-in commands, external process execution, redirection, aliasing, and more all within a Java console.
 
-## Features
 
-- **Built-in Commands**: 
-  - `pwd`: Prints the current working directory.
-  - `cd`: Changes the directory to a specified path (supports absolute, relative paths, and `~` for the home directory).
-  - `echo`: Displays a line of text.
-  - `type`: Identifies whether a command is a shell builtin or an external program.
+## 🚀 Features
 
-- **External Program Execution**: Executes commands found in directories specified by the `PATH` environment variable.
+* `cd` – Change directories
+* `pwd` – Print current working directory
+* `ls` / `ls -l` – List files with optional long-format info
+* `echo` – Print to console
+* `alias` – Define and use shell aliases
+* `clear` – Clears the terminal screen
+* `type` – Check if a command is built-in or from the system
+* Command chaining (`;`, `&&`, `||`)
+* I/O redirection (`>`, `>>`, `<`)
+* External command execution (e.g., `ping`, `java`, `gcc`)
+* Exit using `exit 0`
 
-## Contributing
 
-Feel free to fork this repository, submit issues, or create pull requests. Contributions are welcome!
+## 📦 How to Run
 
-## Note
-This Project is build during Build Your Own X Challange.
+### Prerequisites
+
+* Java 17 or later
+
+### Steps
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/your-username/your-repo.git
+   cd your-repo
+   ```
+
+2. Compile the code:
+
+   ```bash
+   javac Main.java
+   ```
+
+3. Run the shell:
+
+   ```bash
+   java Main
+   ```
+
+
+## 🧪 Example Commands
+
+```shell
+$ alias ll='ls -l'
+$ ll
+$ cd Documents
+$ pwd
+$ echo Hello World > file.txt
+$ cat < file.txt
+$ clear
+$ java -version
+$ type echo
+$ exit 0
+```
+
+
+## 📁 Project Structure
+
+```
+Main.java       # Entry point for the shell
+README.md       # You are reading this
+```
+
+
+## 🙌 Contributing
+
+PRs are welcome. Fork the repo, make your changes, and open a pull request.
+
+
+## 📄 License
+
+This project is open-source and licensed under the MIT License.
+
+
+## 💡 Inspiration
+
+Built to learn about:
+
+* Java’s Process API
+* Terminal emulation
+* Filesystem interaction
+* Shell command parsing
+
+> *“The shell is not just a program. It’s your window to the system.”*
